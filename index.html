@@ -8,9 +8,134 @@
   <link href="style.css" rel="stylesheet" type="text/css" />
 </head>
 
-<body>
-  Hello world
-  <script src="script.js"></script>
-</body>
+  <body>
+    <div class="center">
+      <p>OOOO<br>
+        0001<br>
+        0001<br>
+        0001<br>
+      </p>
+    </div>
+    <div id="controlPanel" class="center">
+      <div class="controlPanelCont">
+        <div class="left" id="lb">
+          ---<br>
+          -<-<br>
+          ---<br>
+        </div>
+        <div class="left" id="ub">
+          ---<br>
+          -^-<br>
+          ---<br>
+        </div>
+        <div class="left" id="rb">
+          ---<br>
+          ->-<br>
+          ---<br>
+        </div>
+      </div>
+      <div class="controlPanelCont">
+        <div class="left" id="a">
+          ---<br>
+          -a-<br>
+          ---<br>
+        </div>
+        <div class="left" id="db">
+          ---<br>
+          -v-<br>
+          ---<br>
+        </div>
+        <div class="left" id="b">
+          ---<br>
+          -b-<br>
+          ---<br>
+        </div>
+      </div>
+    </div>
+    
+  </body>
+  <style>
+    *{
+      font-size: 60px;
+      font-family: 'Courier New', Courier, monospace;
+      line-height: 0.7;
+    }
+    .center{
+      text-align: center;
+    }
+    .left{
+      text-align: left;
+    }
+    .transparent{
+      opacity: 0;
+    }
+    #controlPanel{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .controlPanelCont{
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+    }
+  </style>
 
+  <script>
+  //GENERAL
+  if(1==1){
+    window.addEventListener('load', () => {
+      document.addEventListener('touchmove', function(event) {if (event.touches.length > 1) { event.preventDefault();}}, { passive: false });// Disable pinch zoom on the document
+      document.addEventListener('dblclick', function(event) { event.preventDefault();});// Disable double click to zoom
+        //display stuff
+      resize(); 
+      window.addEventListener('resize', resize);
+      window.addEventListener('deviceorientation', resize);
+        //update
+      startTimer();
+        //buttons
+      initializeButtons();
+    });
+    //GENERAL functions
+    function resize(){
+      screenWidth = window.innerWidth; screenHeight = window.innerHeight;
+      resizeTo(screenWidth, screenHeight);
+    }
+    const FRAMERATE = 24;
+    function startTimer(){ timer = setInterval(update, 1000/FRAMERATE);}
+    function update(){
+      performAnimateQueue();
+    }
+    var animateQueue = [];
+    function performAnimateQueue(){
+      for(let i = 0; i < animateQueue.length; i++){
+        animateQueue[i].update();
+      }
+      if(animateQueue == []){
+        
+      }
+    }
+  }
+
+  //BUTTONS
+  if(1==1){
+    var lb = document.getElementById("lb");
+    var ub = document.getElementById("ub");
+    var rb = document.getElementById("rb");
+    var db = document.getElementById("db");
+    var a = document.getElementById("a");
+    var b = document.getElementById("b");
+    function initializeButtons(){
+      buttons = [lb, ub, rb, db, a, b];
+      buttons.forEach(button => {
+        button.addEventListener('touchstart', executeButtonEffect);
+        button.innerHTML = "._.<br>i"+button.id.charAt(0)+"i<br>._.";
+      })
+    }
+    function executeButtonEffect(){
+      const buttonId = event.target.id;
+    console.log(`Button pressed: ${buttonId}`);
+    }
+  }
+  </script>
 </html>
