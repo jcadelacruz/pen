@@ -9,75 +9,347 @@
 </head>
 
   <body>
-    <div class="center">
-      <p>OOOO<br>
-        0001<br>
-        0001<br>
-        0001<br>
-      </p>
+    <div id="load">
+      <h1>Barilto</h1>
+      <button id="playBtn">Play</button>
+      <button id="options">Options</button>
+      <button id="collectionsBtn">Collection</button>
     </div>
-    <div id="controlPanel" class="center">
-      <div class="controlPanelCont">
-        <div class="left" id="lb">
-          ---<br>
-          -<-<br>
-          ---<br>
+    <div id="db"><!--dashboard-->
+      <div id="1">
+          <p></p>
+          <div>
+            <p>blind's icon</p>
+            <div>
+              <p>Score at least</p>
+              <p></p></p:></p>
+              <p>to earn <span></span></p>
+            </div>
+          </div>
+      </div>
+      <div id="2">
+          <p>Round score</p>
+          <p id="score"></p>
+      </div>
+      <div id="3">
+          <p></p>
+          <div>
+            <p>
+              <span id="chips"></span>
+              x
+              <span id="mult"></span>
+            </p>
+          </div>
+      </div>
+      <div id="4">
+          <div>
+            <button id="runInfo">Run Info</button>
+            <button id="options">Options</button>
+          </div>
+          <div>
+            <div>
+              <div>
+                <p>Hands</p>
+                <p id="hands"></p>
+              </div>
+              <div>
+                <p>Discards</p>
+                <p id="discards"></p>
+              </div>
+            </div>
+            <div>
+              <p id="coin"></p>
+            </div>
+            <div>
+              <div>
+                <p>Ante</p>
+                <p><span id="ante"></span>/8</p>
+              </div>
+              <div>
+                <p>Round</p>
+                <p id="round"></p>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+    <div id="board">
+      <div>
+        <div id="jokers"></div>
+      </div>
+      <div>
+        <div>
+          <button id="nextRoundBtn"></button>
+          <button id="rerollBtn"></button>
         </div>
-        <div class="left" id="ub">
-          ---<br>
-          -^-<br>
-          ---<br>
+        <div id="center"></div>
+      </div>
+      <div>
+        <div id="hand"></div>
+        <div id="deck"></div>
+      </div>
+    </div>
+    <div id="base">
+      <div id="uno">
+        <div style="display: flex;align-items: center;" id="blind">
+          <p id="blindTitle"">big blind</p>
+          <p>score</p>
+          <p id="blindReq">2,000,000,000</p>
+          <p>to gain</p>
+          <p id="blindReward">$4</p>
         </div>
-        <div class="left" id="rb">
-          ---<br>
-          ->-<br>
-          ---<br>
+        <div id="scre">
+          <div>
+            <p>round score</p>
+            <p id="roundScore">1,000,000,000</p>
+          </div>
+          <div>
+            <p>high card <span>lvl.2</span></p>
+          </div>
+          <div>
+            <p id="chips">chip</p>
+            <p>x</p>
+            <p id="mult">mult</p>
+          </div>
+        </div>
+        <div id="roundInfo">
+              <div>
+                <div>
+                  <p>Hands</p>
+                  <p id="hands">4</p>
+                </div>
+                <div>
+                  <p>Discards</p>
+                  <p id="discards"></p>
+                </div>
+              </div>
+              <div>
+                <p id="coin">500</p>
+              </div>
+              <div>
+                <div>
+                  <p>Ante</p>
+                  <p><span id="ante"></span>/8</p>
+                </div>
+                <div>
+                  <p>Round</p>
+                  <p id="round"></p>
+                </div>
+              </div>
         </div>
       </div>
-      <div class="controlPanelCont">
-        <div class="left" id="a">
-          ---<br>
-          -a-<br>
-          ---<br>
-        </div>
-        <div class="left" id="db">
-          ---<br>
-          -v-<br>
-          ---<br>
-        </div>
-        <div class="left" id="b">
-          ---<br>
-          -b-<br>
-          ---<br>
-        </div>
+      <div id="dos">
+        <button>run info</button>
+        <button>options</button>
+        <div style="display: flex;align-items: center;"><p style="height:25px;">deck</p></div>
       </div>
+      <div id="tres">jokers</div>
+      <div id="qtr">center</div>
+      <div id="cinco">hand</div>
     </div>
-    
   </body>
+  
   <style>
     *{
-      font-size: 60px;
+      font-size: 25px;
       font-family: 'Courier New', Courier, monospace;
-      line-height: 0.7;
-    }
-    .center{
+      margin: 0;
+      contain: paint;
       text-align: center;
+      vertical-align: middle;
+          cursor: default;
+          -webkit-touch-callout: none;
+          -webkit-user-select: none;
+          -khtml-user-select: none;
+          -moz-user-select: none;
+          -ms-user-select: none;
+          user-select: none;
     }
-    .left{
-      text-align: left;
+    p{
+      width: 120px;
+      //background-color: blue;
+      height: 60px;
     }
-    .transparent{
-      opacity: 0;
-    }
-    #controlPanel{
+  </style>
+  <style>
+    #base{
+      width: 100vw;
+      height: 100vh;
       display: flex;
       flex-direction: column;
-      align-items: center;
     }
-    .controlPanelCont{
-      display: flex;
-      flex-direction: row;
-      justify-content: flex-start;
+    #base>div{
+      width: 100vw;  
+    }
+      #uno,#dos{
+        display:flex;
+        flex-direction: row;
+      }
+      #uno{
+        background-color: lightpink;
+        height: 22.5vh;
+      }
+        #uno>div{
+          width: 30%;
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+        }
+          #blind{
+            background-color: lightcyan;
+          }
+          #blind>*{
+            width: 100%;
+            font-size: 20px;
+          }
+          p#blindTitle{
+            background-color: lightblue;
+            height: 55px;
+            font-size: 25px;
+          }
+          #blind>*:nth-child(2n){
+            padding-top: 2px;
+            height: 30px;
+          }
+          #blindReq{
+            height: 50px;
+            font-size: 20px; /*turn into js*/
+            word-wrap: break-word;
+            text-wrap: wrap;
+          }
+          #blindReward{
+            height: 30px;
+          }
+        div#scre{
+          width: 40%;
+        }
+          div#scre>*{
+            width: 100%;
+          }
+          #scre>*:nth-child(1){
+            height: 25%;
+            background-color: slategray;
+            display:flex;
+            flex-direction: row;
+            align-items: center;
+          }
+            #scre>*:nth-child(1)>*{
+              font-size: 12px;
+              word-wrap: break-word;
+              text-wrap: wrap;
+            }
+            #scre>*:nth-child(1)>*:nth-child(1){
+              height: 80%;
+              width: 40%;
+            }
+            p#roundScore{
+              height: 100%;
+              width: 60%;
+              font-size: 20px; /*turn into js*/
+            }
+          #scre>*:nth-child(2){
+            height: 55%;
+            background-color: lightgray;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+          }
+          #scre>*:nth-child(2)>p{
+            width: 100%;
+          }
+          #scre>*:nth-child(2)>p>span{
+            width: 30%;
+            font-size: 18px;
+          }
+          div#scre>*:nth-child(3){
+            height: 32px;
+            font-size: 33px;
+            background-color: white;
+            padding: 10px 0;
+            display: flex;
+            flex-direction: row;
+          }
+            #scre>*:nth-child(3)>p{
+              height: 100%;
+            }
+            #scre>*:nth-child(3)>p:nth-child(2n-1){
+              width: 45%;
+            }
+            #scre>*:nth-child(3)>p:nth-child(2){
+              width: 10%;
+            }
+            p#chips{
+              background-color: blue;
+            }
+            p#mult{
+              background-color: red;
+            }
+        div#roundInfo{
+        }
+        div#roundInfo>div{
+          width: 100%;
+          height: calc(100%/3);
+          display: flex;
+          flex-direction: row;
+        }
+          div#roundInfo>div>div{
+            width: 50%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+          }
+            div#roundInfo>div>div>*{
+              width: 100%;
+              height: 40%;
+              font-size: 13px;
+              padding-top: 6px;
+            }
+            div#roundInfo>div>div>*:nth-child(2){
+              background-color: cyan;
+              font-size: 21px;
+            }
+          #roundInfo>div:nth-child(2){
+            display:flex;
+            align-items: center;
+            background-color: red;
+          }
+          #roundInfo>div:nth-child(2)>*{
+            height: 26px;
+          }
+      #dos{
+        background-color: lightcoral;
+        justify-content: space-around;
+        height: 8.75vh;
+      }
+        #dos>*{
+          width: 30vw;
+        }
+        #dos>*:nth-child(3){
+          background-color: moccasin;
+        }
+      #tres{
+        background-color: lightcyan;
+        height: 8.75vh;
+      }
+      #qtr{
+        background-color: lightgreen;
+        height: 30vh;
+      }
+      #cinco{
+        background-color: lightgoldenrodyellow;
+        height: 30vh;
+      }
+    #load{
+      z-index: 10;
+      display: none;
+    }
+    #db{
+      z-index: 5;
+      display: none;
+    }
+    #board{
+      z-index: 0;
+      display: none;
     }
   </style>
 
@@ -91,8 +363,6 @@
       resize(); 
       window.addEventListener('resize', resize);
       window.addEventListener('deviceorientation', resize);
-        //update
-      startTimer();
         //buttons
       initializeButtons();
     });
@@ -101,20 +371,9 @@
       screenWidth = window.innerWidth; screenHeight = window.innerHeight;
       resizeTo(screenWidth, screenHeight);
     }
-    const FRAMERATE = 24;
-    function startTimer(){ timer = setInterval(update, 1000/FRAMERATE);}
-    function update(){
-      performAnimateQueue();
-    }
-    var animateQueue = [];
-    function performAnimateQueue(){
-      for(let i = 0; i < animateQueue.length; i++){
-        animateQueue[i].update();
-      }
-      if(animateQueue == []){
-        
-      }
-    }
+    //const FRAMERATE = 24;
+    //function startTimer(){ timer = setInterval(update, 1000/FRAMERATE);}
+    function update(){}
   }
 
   //BUTTONS
@@ -134,7 +393,7 @@
     }
     function executeButtonEffect(){
       const buttonId = event.target.id;
-    console.log(`Button pressed: ${buttonId}`);
+      console.log(`Button pressed: ${buttonId}`);
     }
   }
   </script>
