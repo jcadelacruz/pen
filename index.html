@@ -10,68 +10,10 @@
 
   <body>
     <div id="load">
-      <h1>Barilto</h1>
+      <h1>Balato</h1>
       <button id="playBtn">Play</button>
       <button id="options">Options</button>
       <button id="collectionsBtn">Collection</button>
-    </div>
-    <div id="db"><!--dashboard-->
-      <div id="1">
-          <p></p>
-          <div>
-            <p>blind's icon</p>
-            <div>
-              <p>Score at least</p>
-              <p></p></p:></p>
-              <p>to earn <span></span></p>
-            </div>
-          </div>
-      </div>
-      <div id="2">
-          <p>Round score</p>
-          <p id="score"></p>
-      </div>
-      <div id="3">
-          <p></p>
-          <div>
-            <p>
-              <span id="chips"></span>
-              x
-              <span id="mult"></span>
-            </p>
-          </div>
-      </div>
-      <div id="4">
-          <div>
-            <button id="runInfo">Run Info</button>
-            <button id="options">Options</button>
-          </div>
-          <div>
-            <div>
-              <div>
-                <p>Hands</p>
-                <p id="hands"></p>
-              </div>
-              <div>
-                <p>Discards</p>
-                <p id="discards"></p>
-              </div>
-            </div>
-            <div>
-              <p id="coin"></p>
-            </div>
-            <div>
-              <div>
-                <p>Ante</p>
-                <p><span id="ante"></span>/8</p>
-              </div>
-              <div>
-                <p>Round</p>
-                <p id="round"></p>
-              </div>
-            </div>
-          </div>
-      </div>
     </div>
     <div id="board">
       <div>
@@ -90,7 +32,7 @@
       </div>
     </div>
     <div id="base">
-      <div id="uno">
+      <div id="dashboard">
         <div style="display: flex;align-items: center;" id="blind">
           <p id="blindTitle"">big blind</p>
           <p>score</p>
@@ -138,14 +80,66 @@
               </div>
         </div>
       </div>
-      <div id="dos">
+      <div id="buttonBar">
         <button>run info</button>
         <button>options</button>
         <div style="display: flex;align-items: center;"><p style="height:25px;">deck</p></div>
       </div>
-      <div id="tres">jokers</div>
-      <div id="qtr">center</div>
-      <div id="cinco">hand</div>
+      <div id="jokers">
+        <div>abcagggdf</div>
+        <div>aabcgggadf</div>
+        <div>aabcgggadf</div>
+        <div>aabcgggadf</div>
+        <div>1aabcgggadf</div>
+        <div>2aabcgggadf</div>
+        <div>3aabcgggadf</div>
+        <div>4aabcgggadf</div>
+        <div>5aabcgggadf</div>
+        <div>6aabcgggadf</div>
+        <div>7aabcgggadf</div>
+        <div>8aabcgggadf</div>
+        <div>9aabcgggadf</div>
+        <div>0aabcgggadf</div>
+      </div>
+      <div id="center">
+
+        <div>1aabcgggadf</div>
+        <div>2aabcgggadf</div>
+        <div>3aabcgggadf</div>
+        <div>4aabcgggadf</div>
+        <div>5aabcgggadf</div>
+        <div>6aabcgggadf</div>
+        <div>7aabcgggadf</div>
+        <div>8aabcgggadf</div>
+        <div>9aabcgggadf</div>
+        <div>0aabcgggadf</div>
+        <div>1aabcgggadf</div>
+        <div>2aabcgggadf</div>
+        <div>3aabcgggadf</div>
+        <div>4aabcgggadf</div>
+        <div>5aabcgggadf</div>
+        <div>6aabcgggadf</div>
+        <div>7aabcgggadf</div>
+        <div>8aabcgggadf</div>
+        <div>9aabcgggadf</div>
+        <div>0aabcgggadf</div>
+        <div>1aabcgggadf</div>
+        <div>2aabcgggadf</div>
+        <div>3aabcgggadf</div>
+        <div>4aabcgggadf</div>
+        <div>5aabcgggadf</div>
+        <div>6aabcgggadf</div>
+        <div>7aabcgggadf</div>
+        <div>8aabcgggadf</div>
+        <div>9aabcgggadf</div>
+        <div>0aabcgggadf</div>
+      </div>
+      <div id="hand">
+
+        <div>aabcgggadf</div>
+        <div>aabcgggadf</div>
+        <div>aabcgggadf</div>
+      </div>
     </div>
   </body>
   
@@ -181,20 +175,22 @@
     #base>div{
       width: 100vw;  
     }
-      #uno,#dos{
+      #dashboard,#buttonBar{
         display:flex;
         flex-direction: row;
       }
-      #uno{
+      #dashboard{
         background-color: lightpink;
         height: 22.5vh;
       }
-        #uno>div{
+        #dashboard>div{
           width: 30%;
           height: 100%;
           display: flex;
           flex-direction: column;
         }
+  </style>
+  <style>
           #blind{
             background-color: lightcyan;
           }
@@ -220,6 +216,8 @@
           #blindReward{
             height: 30px;
           }
+  </style>
+  <style>
         div#scre{
           width: 40%;
         }
@@ -284,6 +282,8 @@
             p#mult{
               background-color: red;
             }
+  </style>
+  <style>
         div#roundInfo{
         }
         div#roundInfo>div{
@@ -316,40 +316,58 @@
           #roundInfo>div:nth-child(2)>*{
             height: 26px;
           }
-      #dos{
+      #buttonBar{
         background-color: lightcoral;
         justify-content: space-around;
         height: 8.75vh;
       }
-        #dos>*{
+        #buttonBar>*{
           width: 30vw;
         }
-        #dos>*:nth-child(3){
+        #buttonBar>*:nth-child(3){
           background-color: moccasin;
         }
-      #tres{
-        background-color: lightcyan;
-        height: 8.75vh;
-      }
-      #qtr{
-        background-color: lightgreen;
-        height: 30vh;
-      }
-      #cinco{
-        background-color: lightgoldenrodyellow;
-        height: 30vh;
-      }
+  </style>
+  <style>
     #load{
       z-index: 10;
-      display: none;
-    }
-    #db{
-      z-index: 5;
       display: none;
     }
     #board{
       z-index: 0;
       display: none;
+    }
+    #center,#hand,#jokers{
+      overflow-x: hidden;
+      overflow-y: scroll;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      align-items: center;
+    }
+    #jokers{
+      background-color: lightcyan;
+      height: 8.75vh;
+    }
+    #jokers>*{
+      background-image: linear-gradient(to bottom right, red, yellow);
+      height: 8vh;
+      width: 5.76vh;
+    }
+    #center,#hand{
+      height: 30vh;
+    }
+      #center>*,#hand>*{
+        background-image: linear-gradient(to bottom right, red, yellow);
+        height: 9vh;
+        width: 6.48vh;
+      }
+    #center{
+      background-color: lightgreen;
+    }
+    #hand{
+      background-color: lightgoldenrodyellow;
     }
   </style>
 
@@ -364,7 +382,7 @@
       window.addEventListener('resize', resize);
       window.addEventListener('deviceorientation', resize);
         //buttons
-      initializeButtons();
+      //initializeButtons();
     });
     //GENERAL functions
     function resize(){
@@ -376,8 +394,153 @@
     function update(){}
   }
 
-  //BUTTONS
+  //CLASSES
   if(1==1){
+    //player
+    class Player{
+      constructor(n, d){
+        this.name = n;
+        //round
+        this.roundScore = 0;
+        this.handScore = 0;
+        this.chips = 0;
+        this.mult = 0;
+        this.hand = [];
+        this.played = [];
+        this.discardPile = [];
+        //game
+        this.coins = 0;
+        this.ante = 1;
+        this.jokers = [];
+        this.deck = d;
+      }
+    }
+    //card
+    class Card{
+      constructor(r, s, enh, sea, edi){
+        this.rank = r;
+        this.suit = s;
+        this.enhancement = enh;
+        this.seal = sea;
+        this.edition = edi;
+        
+      }
+    }
+    class Enhancement{
+      constructor(trigger,ca,ma,cm,mm,se,re,wild,glass,coina,coinm,chance){
+        this.trigger = trigger;//1-in play, 2-in hand, 3-in hand at end of round
+        
+        this.ca = ca;//chip add
+        this.ma = ma;//mult add
+        this.cm = cm;//chip multiply
+        this.mm = mm;//mult multiply
+        this.se = se;//suit effect, 0-no effect, 1-clear suit
+        this.re = re;//rank effect, 0-no effect, 1-clear rank
+        
+        this.isWild = wild;//bool
+        this.willBeDestroyed = glass;//bool; the chance is the chance the card gets destroyed
+        this.coina = coina;
+        this.coinm = coinm;
+        this.chance = chance;
+      }
+      attemptExecuteEffect(trigger,p,c){
+        if(trigger==this.trigger){
+          let chanceSuccess = false;
+          if(Math.random()<this.chance) chanceSuccess = true;
+          if(chanceSuccess || willBeDestroyed){ this.executeEffect(p,c);}
+          if(chanceSuccess && willBeDestroyed){ c.destroy();}
+        }
+      }
+      executeEffect(p,c){
+        p.chips *= this.cm;
+        p.mult *= this.mm;
+        p.chips += this.ca;
+        p.mult += this.ma;
+        if(sr+re>0){ c.srEffect(se,re);}
+        if(isWild){ c.srEffect(isWild);}
+        p.coins += this.coina;
+        p.coins *= this.coinm;
+      }
+    }
+    if(1==1){
+    var ebonus = new Enhancement(1, 30, 0, 1, 1, 0, 0, false, false, 0, 0, 1);
+    var emult  = new Enhancement(1, 0, 4, 1, 1, 0, 0, false, false, 0, 0, 1);
+    var ewild  = new Enhancement(1, 0, 0, 1, 1, 0, 0, true, false, 0, 0, 1);
+    var eglass = new Enhancement(1, 0, 0, 1, 2, 0, 0, false, true, 0, 0, 0.25);
+    var esteel = new Enhancement(2, 0, 0, 1, 1.5, 0, 0, false, false, 0, 0, 1);
+    var estone = new Enhancement(1, 50, 0, 0, 0, 1, 1, false, false, 0, 0, 1);
+    var egold  = new Enhancement(3, 0, 0, 1, 1, 0, 0, false, false, 3, 0, 1);
+    var elucky = new Enhancement(1, 0, 20, 1, 1, 0, 0, false, false, 0, 0, 0.2);
+    }
+    //deck
+    class Deck{
+      constructor(c){
+        this.cards = c;
+      }
+      shuffle(){
+        let currentIndex = this.cards.length;
+      
+        // While there remain elements to shuffle...
+        while (currentIndex != 0) {
+          // Pick a remaining element...
+          let randomIndex = Math.floor(Math.random() * currentIndex);
+          currentIndex--;
+          // And swap it with the current element.
+          [this.cards[currentIndex], this.cards[randomIndex]] = [
+          this.cards[randomIndex], this.cards[currentIndex]];
+        }
+      }
+    }
+    //jokers
+    //game
+    const SMALLREWARD = 3, BIGREWARD = 4, BOSSREWARD = 5, FINISHERREWARD = 8;
+    const SMALLMULT = 1, BIGMULT = 1.5, BOSSMULT = 2, FINISHERMULT = 2;
+    class Game{
+      constructor(seed){
+        this.baseReq = [100, 300,800,2000,5000, 11000,20000,35000,50000, 110000,560000,7200000,300 000000, 47 000 000 000,29 000000 000000, 77 000000 000 000000, 860 000000 000000 000000];//with ante as the index
+        this.roundCount = 0;
+      }
+      startNextRound(p){
+        this.roundCount++;
+        let r;
+        if(this.roundCount%3==1){
+          r = new Round("small blind", p.ante*SMALLMULT, SMALLREWARD, "", )
+        }
+      }
+      skipNextRound(){
+        this.roundCount++;
+      }
+    }
+    //round
+    class Round{
+      constructor(t,rq,rw,d,h,disc){
+        this.title = t;
+        this.roundReq = rq;
+        this.roundReward = rw;
+        this.description = d;
+        this.hands = h;
+        this.discards = disc;
+        //player
+        this.special;
+      }
+      start(){
+        
+      }
+    }
+
+    var standard52 = new Deck([
+      
+    ]);
+    var user = new Player("test", standard52);
+  }
+  //DISPLAYS
+  if(1==1){
+    //cards
+    //jokers
+  }
+
+  //BUTTONS
+  if(1==0){
     var lb = document.getElementById("lb");
     var ub = document.getElementById("ub");
     var rb = document.getElementById("rb");
