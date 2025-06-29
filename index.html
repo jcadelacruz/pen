@@ -420,9 +420,8 @@
     }
   </style>
 
-  <script>
+  <script id="onload_and_general_functions_script">
   //GENERAL
-  if(1==1){
     window.addEventListener('load', () => {
       document.addEventListener('touchmove', function(event) {if (event.touches.length > 1) { event.preventDefault();}}, { passive: false });// Disable pinch zoom on the document
       document.addEventListener('dblclick', function(event) { event.preventDefault();});// Disable double click to zoom
@@ -441,14 +440,16 @@
     //const FRAMERATE = 24;
     //function startTimer(){ timer = setInterval(update, 1000/FRAMERATE);}
     function update(){}
-  }
-
+  </script>
+  <script id="classes_script">
   //CLASSES
-  if(1==1){
+    let playerInstant = new Player("name", []);
+    const SPADE = 1, HEART = 2, DIAMOND = 3, CLUB = 4;
+    const SCORE_TRIGGER=52043, HELD_TRIGGER=4310, HELD_ON_ROUND_END_TRIGGER=4360, DISCARDED_TRIGGER=41524, ROUND_START_TRIGGER=57447;
     //player
     class Player{
-      constructor(n, d){
-        this.name = n;
+      constructor(name, deck){
+        this.name = name;
         //round
         this.roundScore = 0;
         this.handScore = 0;
@@ -456,52 +457,80 @@
         this.mult = 0;
         this.hand = [];
         this.played = [];
-        this.discardPile = [];
+        this.indexOfLastDrawn = 0;
         //game
+        this.hands = 3;
+        this.handSize = 7;
+        this.discards = 3;
         this.coins = 0;
         this.ante = 1;
         this.jokers = [];
-        this.deck = d;
+        this.deck = deck;
       }
     }
+    function 
     //card
     class Card{
-      constructor(r, s, enh, sea, edi){
-        this.rank = r;
-        this.suit = s;
+      constructor(rank, suit, enh, sea, edi){
+        this.rank = rank;
+        this.suit = suit;
+        
         this.enhancement = enh;
-        this.seal = sea;
         this.edition = edi;
+        this.seal = sea;
+      }
+      //on score effects
+      score(){
+        //add rank
+        runModifiers(SCORE_TRIGGER);
+      }
+      //retrigger
+      checkForNumberOfRetriggers(){
         
       }
+      //MODIFIERS
+      runModifiers(trigger){
+        this.enhancement.attemptExecuteEffect(trigger,playerInstant,this);
+        //attempt trigger edition
+        //attempt trigger seal
+      }
+      
     }
+    /* MODIFIERS
+    Playing cards may each have one Enhancement, one Edition, and one Seal.
+    Jokers may have one Edition and multiple Stickers
+    Consumable may have the negative Edition (via Perkeo)
+    
+    Editions are different for cards, jokers, and consumables, but essentially do the same things
+    */
     class Enhancement{
-      constructor(trigger,ca,ma,cm,mm,se,re,wild,glass,coina,coinm,chance){
-        this.trigger = trigger;//1-in play, 2-in hand, 3-in hand at end of round
+      constructor(triggerType, chipAddAmount, multiplierAdd, chipMultiplier, multiplierMultiply, isStoneCard, isWildCard, willBeDestroyed, coinAmountAdd, coinAmountMultiply, chance) {
+        this.trigger = triggerType; // see above for triggers, 0 means no trigger (on add)
         
-        this.ca = ca;//chip add
-        this.ma = ma;//mult add
-        this.cm = cm;//chip multiply
-        this.mm = mm;//mult multiply
-        this.se = se;//suit effect, 0-no effect, 1-clear suit
-        this.re = re;//rank effect, 0-no effect, 1-clear rank
+        this.chipAdd = chipAddAmount; // chip add
+        this.multAdd = multiplierAdd; // mult add
+        this.chipMult = chipMultiplier; // chip multiply
+        this.multMult = multiplierMultiply; // mult multiply
         
-        this.isWild = wild;//bool
-        this.willBeDestroyed = glass;//bool; the chance is the chance the card gets destroyed
-        this.coina = coina;
-        this.coinm = coinm;
-        this.chance = chance;
+        this.isStone = isStoneCard;
+        this.isWild = isWildCard; // bool
+        this.willBeDestroyed = willBeDestroyed; // bool; indicates if the card will be destroyed
+        
+        this.coinAdd = coinAmountAdd; // amount of coins A
+        this.coinMult = coinAmountMultiply; // amount of coins M
+        
+        this.chance = chance; // chance of the card getting destroyed/triggered
       }
-      attemptExecuteEffect(trigger,p,c){
+      attemptExecuteEffect(trigger,player,card){
         if(trigger==this.trigger){
           let chanceSuccess = false;
           if(Math.random()<this.chance) chanceSuccess = true;
-          if(chanceSuccess || willBeDestroyed){ this.executeEffect(p,c);}
-          if(chanceSuccess && willBeDestroyed){ c.destroy();}
+          if(chanceSuccess || willBeDestroyed){ this.executeEffect(player,card);}
+          if(chanceSuccess && willBeDestroyed){ card.destroy();}
         }
       }
       executeEffect(p,c){
-        p.chips *= this.cm;
+        p.chips *= this.coinMultiply;
         p.mult *= this.mm;
         p.chips += this.ca;
         p.mult += this.ma;
@@ -511,69 +540,89 @@
         p.coins *= this.coinm;
       }
     }
+    
+    //instantiation
     if(1==1){
-    var ebonus = new Enhancement(1, 30, 0, 1, 1, 0, 0, false, false, 0, 0, 1);
-    var emult  = new Enhancement(1, 0, 4, 1, 1, 0, 0, false, false, 0, 0, 1);
-    var ewild  = new Enhancement(1, 0, 0, 1, 1, 0, 0, true, false, 0, 0, 1);
-    var eglass = new Enhancement(1, 0, 0, 1, 2, 0, 0, false, true, 0, 0, 0.25);
-    var esteel = new Enhancement(2, 0, 0, 1, 1.5, 0, 0, false, false, 0, 0, 1);
-    var estone = new Enhancement(1, 50, 0, 0, 0, 1, 1, false, false, 0, 0, 1);
-    var egold  = new Enhancement(3, 0, 0, 1, 1, 0, 0, false, false, 3, 0, 1);
-    var elucky = new Enhancement(1, 0, 20, 1, 1, 0, 0, false, false, 0, 0, 0.2);
+      var ebonus = new Enhancement(SCORE_TRIGGER, 30, 0, 1, 1, false, false, false, 0, 0, 1);
+      var emult  = new Enhancement(SCORE_TRIGGER, 0, 4, 1, 1, false, false, false, 0, 0, 1);
+      var ewild  = new Enhancement(0, 0, 0, 1, 1, false, true, false, 0, 0, 1);
+      var eglass = new Enhancement(SCORE_TRIGGER, 0, 0, 1, 2, false, false, true, 0, 0, 0.25);
+      var esteel = new Enhancement(HELD_TRIGGER, 0, 0, 1, 1.5, false, false, false, 0, 0, 1);
+      var estone = new Enhancement(0, 50, 0, 0, 0, true, false, false, 0, 0, 1);
+      var egold  = new Enhancement(HELD_ON_ROUND_END_TRIGGER, 0, 0, 1, 1, false, false, false, 3, 0, 1);
+      var elucky = new Enhancement(SCORE_TRIGGER, 0, 20, 1, 1, false, false, false, 0, 0, 0.2);
     }
     //deck
     class Deck{
       constructor(c){
         this.cards = c;
+        this.presentedOrder = c;
       }
       shuffle(){
         let currentIndex = this.cards.length;
       
-        // While there remain elements to shuffle...
         while (currentIndex != 0) {
-          // Pick a remaining element...
           let randomIndex = Math.floor(Math.random() * currentIndex);
           currentIndex--;
-          // And swap it with the current element.
-          [this.cards[currentIndex], this.cards[randomIndex]] = [
-          this.cards[randomIndex], this.cards[currentIndex]];
+          [this.presentedOrder[currentIndex], this.presentedOrder[randomIndex]] = [
+          this.presentedOrder[randomIndex], this.presentedOrder[currentIndex]];
         }
+      }
+      sort(){
+        //idek
+      }
+      addCard(card){
+        this.cards.push(card);
+        this.sort();
+        this.presentedOrder = this.cards;
+        //shuffle?
       }
     }
     //jokers
+  </script>
+  <script id="game_class_script">
     //game
     const SMALLREWARD = 3, BIGREWARD = 4, BOSSREWARD = 5, FINISHERREWARD = 8;
     const SMALLMULT = 1, BIGMULT = 1.5, BOSSMULT = 2, FINISHERMULT = 2;
     class Game{
       constructor(seed){
         this.baseReq = [100, 300,800,2000,5000, 11000,20000,35000,50000, 110000,560000,7200000,300 000000, 47 000 000 000,29 000000 000000, 77 000000 000 000000, 860 000000 000000 000000];//with ante as the index
-        this.roundCount = 0;
+        this.blindCount = 0;
       }
-      startNextRound(p){
-        this.roundCount++;
-        let r;
+      startNextRound(player){
+        this.blindCount++;
+        let b;
         if(this.roundCount%3==1){
-          r = new Round("small blind", p.ante*SMALLMULT, SMALLREWARD, "", )
+          b = new Blind("small blind", player.ante*SMALLMULT, SMALLREWARD, "", )
         }
       }
-      skipNextRound(){
-        this.roundCount++;
+      skipNextBlind(){
+        this.blindCount++;
       }
     }
     //round
-    class Round{
-      constructor(t,rq,rw,d,h,disc){
-        this.title = t;
-        this.roundReq = rq;
-        this.roundReward = rw;
-        this.description = d;
-        this.hands = h;
-        this.discards = disc;
+    class Blind{
+      constructor(title, blindReq, blindReward, description, hands, discards) {
+        this.title = title;
+        this.blindReq = blindReq;
+        this.blindReward = blindReward;
+        this.description = description;
+        this.hands = hands;
+        this.discards = discards;
         //player
-        this.special;
+        this.special; //?
       }
-      start(){
+      start(player){
+        //shuffle player.deck
+        //draw hand with player.deck.presentedOrder, player.handSize, 
         
+        //if(this.isBoss) attemptExecuteBossBlindEffect(ROUND_START_TRIGGER)
+        
+        //
+      }
+      end(){
+        //for each card in hand.attemptExecuteEffect(HELD_ON_ROUND_END_TRIGGER);
+        //put away all cards (not discard)
       }
     }
 
@@ -581,14 +630,15 @@
       
     ]);
     var user = new Player("test", standard52);
-  }
-  //DISPLAYS
+  </script>
+  <script>
+    //DISPLAYS
   if(1==1){
     //cards
     //jokers
   }
-
-  //BUTTONS
+  
+    //BUTTONS
   if(1==0){
     var lb = document.getElementById("lb");
     var ub = document.getElementById("ub");
