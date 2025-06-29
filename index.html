@@ -151,6 +151,7 @@
           -moz-user-select: none;
           -ms-user-select: none;
           user-select: none;
+      overscroll-behavior: none;
     }
     p{
       width: 120px;
@@ -176,7 +177,7 @@
       }
       #dashboard{
         background-color: lightpink;
-        height: 22.5vh;
+        height: 25.25vh;
       }
         #dashboard>div{
           width: 30%;
@@ -358,23 +359,21 @@
     
     #upperboard{
       margin: 1vh 0;
-      height: 8.75vh;
+      height: 10vh;
       display: flex;
       flex-direction: row;
     }
       #jokers{
         background-color: lightcyan;
-        height: 8.75vh;
         width: 70vw;
       }
       #consumables{
         background-color: honeydew;
-        height: 8.75vh;
         width: 30vw;
       }
     
     #center,#hand{
-      height: 25vh;
+      height: 23vh;
       }
       #center{
         background-color: lightgreen;
@@ -406,20 +405,18 @@
       
   </style>
   <style id="cardStyle">
+    #jokers>*,#consumables>*,#center>*,#hand>*{
+      width: 6.48vh;
+      aspect-ratio: 5.76/8;
+    }
     #jokers>*{
       background-image: linear-gradient(to bottom right, red, yellow);
-      height: 8vh;
-      width: 5.76vh;
     }
     #consumables>*{
       background-image: linear-gradient(to bottom right, green, lightcyan);
-      height: 8vh;
-      width: 5.76vh;
     }
     #center>*,#hand>*{
       background-image: linear-gradient(to bottom right, lightgray, ivory);
-      height: 9vh;
-      width: 6.48vh;
     }
   </style>
 
