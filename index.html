@@ -640,12 +640,136 @@
   </script>
   <script>
     //DISPLAYS
-  if(1==1){
+    //dashboard
+    //const blindNameHTML, blindReqHTML, blindRewardHTML //rename these 
+    function updateBlindData(blind){
+      updateBlindName(blind);
+      updateBlindScore(blind);
+    }
+    function updateBlindName(blind){
+      
+    }
+    function updateBlindScore(blind){
+      
+    }
+    
+    function updateHandDetails(){//this would be used upon playing a hand 
+      updateBlindScore();
+      updateHandScore();
+    }
+    function updateBlindScore(){
+      
+    }
+    function updateHandScore(){//create hand score html element to reduce animations?
+      
+    }
+    function updateHandType(hand, player){//this would be used when selecting hand type 
+    //idk what var type the hand should be
+    //i can reduce access from player to only necessary player details
+      updateHandName(hand);
+      updateHandBaseScore(hand, player);
+    }
+    function updateHandName(hand){
+      
+    }
+    function updateHandBaseScore(hand, player){//i can reduce access from player to only necessary player details
+      
+    }
+    
+    function updateRightHandSide(playerHands, playerDiscards, playerCoin, playerAnte, playerRound){//update on score, on purchase, on blind select, on everything
+      
+    }
+    //deck
+    function updateDeckDisplay(){
+      
+    }
     //cards
-    //jokers
-  }
-  
-    //BUTTONS
+    //const jokerContainer=, consumablesContainer=, centerContainer=, handContainer=;
+    function addCardToContainer(card, container){
+    //i can reduce access from card to only necessary card details
+      //changes html, but the game reading of the card being on that specific container should be computed by the function that called this function
+    }
+    function removeCardFromContainer(card, container){
+      
+    }
+    function clearContainerContents(container){
+      
+    }
+    function selectCardInContainer(card, container){
+      
+    }
+    function reorderCardInContainer(indexFrom, indexTo, container){
+      
+    }
+      //jokers
+    function addCardToJokers(card) {
+    	addCardToContainer(card, jokerContainer);
+    }
+    function removeCardFromJokers(card) {
+    	removeCardFromContainer(card, jokerContainer);
+    }
+    function clearJokers() {
+    	clearContainerContents(jokerContainer);
+    }
+    function selectCardInJokers(card) {
+    	selectCardInContainer(card, jokerContainer);
+    }
+    function reorderJokers(indexFrom, indexTo) {
+    	reorderCardInContainer(indexFrom, indexTo, jokerContainer);
+    }
+      //consumables
+    function addCardToConsumables(card) {
+    	addCardToContainer(card, consumablesContainer);
+    }
+    function removeCardFromConsumables(card) {
+    	removeCardFromContainer(card, consumablesContainer);
+    }
+    function clearConsumables() {
+    	clearContainerContents(consumablesContainer);
+    }
+    function selectCardInConsumables(card) {
+    	selectCardInContainer(card, consumablesContainer);
+    }
+    function reorderConsumables(indexFrom, indexTo) {
+    	reorderCardInContainer(indexFrom, indexTo, consumablesContainer);
+    }
+    
+      //center
+    function addCardToCenter(card) {
+    	addCardToContainer(card, centerContainer);
+    }
+    function removeCardFromCenter(card) {
+    	removeCardFromContainer(card, centerContainer);
+    }
+    function clearCenter() {
+    	clearContainerContents(centerContainer);
+    }
+    function selectCardInCenter(card) {
+    	selectCardInContainer(card, centerContainer);
+    }
+    function reorderCenter(indexFrom, indexTo) {
+    	reorderCardInContainer(indexFrom, indexTo, centerContainer);
+    }
+      //hand    
+    function addCardToHand(card) {
+    	addCardToContainer(card, handContainer);
+    }
+    function removeCardFromHand(card) {
+    	removeCardFromContainer(card, handContainer);
+    }
+    function clearHand() {
+    	clearContainerContents(handContainer);
+    }
+    function selectCardInHand(card) {
+    	selectCardInContainer(card, handContainer);
+    }
+    function reorderHand(indexFrom, indexTo) {
+    	reorderCardInContainer(indexFrom, indexTo, handContainer);
+    }
+    
+    //BUTTONS 
+    //button bar
+    //play button bar
   if(1==0){
     var lb = document.getElementById("lb");
     var ub = document.getElementById("ub");
