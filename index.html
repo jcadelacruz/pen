@@ -468,7 +468,7 @@
         this.deck = deck;
       }
     }
-    function 
+    
     //card
     class Card{
       constructor(rank, suit, enh, sea, edi){
@@ -588,16 +588,23 @@
       constructor(seed){
         this.baseReq = [100, 300,800,2000,5000, 11000,20000,35000,50000, 110000,560000,7200000,300 000000, 47 000 000 000,29 000000 000000, 77 000000 000 000000, 860 000000 000000 000000];//with ante as the index
         this.blindCount = 0;
+        this.currentRoundsBlinds = [];
+        this.completedBossBlinds = [];
       }
       startNextRound(player){
         this.blindCount++;
-        let b;
-        if(this.roundCount%3==1){
-          b = new Blind("small blind", player.ante*SMALLMULT, SMALLREWARD, "", )
-        }
+        let smallBlind = new Blind("small blind", player.ante*SMALLMULT, SMALLREWARD, "", );
+        let bigBlind = new Blind("big blind", player.ante*BIGMULT, BIGREWARD, "", );
+        let bossBlind = createBossBlind();
+        
       }
       skipNextBlind(){
         this.blindCount++;
+      }
+      createBossBlind(){
+        //createBossBlind
+        //temporary
+        return new Blind("bos blind", player.ante*BOSSMULT, BOSSREWARD, "", );
       }
     }
     //round
