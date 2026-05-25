@@ -7,9 +7,6 @@
   <title>Balato</title>
   <link href="style.css" rel="stylesheet" type="text/css" />
 </head>
-<!-- Start: Copyright 2025 TraceMyIP.org Service Code (141254-09012025)- DO NOT MODIFY //-->
-<div id="elemID031021" style="line-height:16px;text-align:center;z-index:100000;"><script async type="text/javascript" src="//s2.tracemyip.org/vLg/lgUrl.php?pidnVar2=103426&amp;prtVar2=1&amp;stlVar2=1105&amp;rgtype=4684NR-IPIB&amp;scvVar2=12"></script><noscript><a title="Wordpress Analytics" href="https://www.tracemyip.org/website-analytics.htm"><img src="//s2.tracemyip.org/vLg/1105/4684NR-IPIB/103426/1/12/ans/" alt="Wordpress analytics" referrerpolicy="no-referrer-when-downgrade" style="border:0px;"></a></noscript></div>
-<!-- End: TraceMyIP.org Service Code //-->
   <body>
     <div id="load">
       <h1>Balato</h1>
@@ -18,22 +15,17 @@
       <button id="collectionsBtn">Collection</button>
     </div>
     <div id="board">
-      <div>
-        <div></div>
-      </div>
+      <!-- this is the div that reappears after the round is played and 
+      the shop or round select is shown. Either this is a div that becomes 
+      unhidden or i just write directly on the center and hand !-->
       <div>
         <div>
-          <button id="nextRoundBtn"></button>
-          <button id="rerollBtn"></button>
+          <button id="nextRoundBtn">nextRoundBtn</button>
+          <button id="rerollBtn">rerollBtn</button>
         </div>
-        <div id="center"></div>
-      </div>
-      <div>
-        <div id="hand"></div>
-        <div id="deck"></div>
       </div>
     </div>
-    <div id="base">
+    <div id="base"><!-- this is the div that shows like everything lol !-->
       <div id="dashboard">
         <div style="display: flex;align-items: center;" id="blind">
           <p id="blindTitle">big blind</p>
@@ -160,6 +152,10 @@
       //background-color: blue;
       height: 60px;
     }
+    html {
+      height: 100%;
+      width: 100%;
+    }
   </style>
   <style id="baseAndDashboardStyle">
     #base{
@@ -281,21 +277,7 @@
               background-color: red;
             }
   </style>
-  <style id="buttonBarStyle">
-    #buttonBar{
-      background-color: lightcoral;
-      justify-content: space-around;
-      height: 8.75vh;
-      align-items: center;
-    }
-      #buttonBar>*{
-        width: 30vw;
-        height: 7.25vh;
-      }
-      #buttonBar>*:nth-child(3){
-        background-color: moccasin;
-      }
-      
+  <style id="dashboardRoundInfoStyle">
       div#roundInfo{
       }
       div#roundInfo>div{
@@ -328,6 +310,23 @@
         #roundInfo>div:nth-child(2)>*{
           height: 26px;
         }
+  </style>
+  <style id="buttonBarStyle">
+    #buttonBar{
+      background-color: lightcoral;
+      justify-content: space-around;
+      height: 8.75vh;
+      align-items: center;
+    }
+      #buttonBar>*{
+        width: 30vw;
+        height: 7.25vh;
+        
+        font-size: 16px;
+      }
+      #buttonBar>*:nth-child(3){
+        background-color: moccasin;
+      }
   </style>
   <style id="loadAndBoardStyle">
     #load{
