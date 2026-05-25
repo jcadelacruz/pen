@@ -100,15 +100,6 @@
       </div>
         
       <div id="center">
-        <div>1s</div>
-        <div>2s</div>
-        <div>3s</div>
-        <div>4s</div>
-        <div>5s</div>
-        <div>6s</div>
-        <div>7s</div>
-        <div>8s</div>
-        <div>9s</div>
       </div>
       <div id="playButtons">
         <button id="playHand">play</button>
@@ -117,15 +108,6 @@
         <button id="discardHand">discard</button>
       </div>
       <div id="hand">
-        <div>1s</div>
-        <div>2s</div>
-        <div>3s</div>
-        <div>4s</div>
-        <div>5s</div>
-        <div>6s</div>
-        <div>7s</div>
-        <div>8s</div>
-        <div>9s</div>
       </div>
     </div>
   </body>
@@ -409,6 +391,7 @@
     #jokers>*,#consumables>*,#center>*,#hand>*{
       width: 6.48vh;
       aspect-ratio: 5.76/8;
+      background-blend-mode: multiply; 
     }
     #jokers>*{
       background-image: linear-gradient(to bottom right, red, yellow);
@@ -418,6 +401,25 @@
     }
     #center>*,#hand>*{
       background-image: linear-gradient(to bottom right, lightgray, ivory);
+    }
+    .hidden{
+      display: none;
+    }
+    .selected{
+      filter: brightness(70%); /* Tinge 30% darker */
+    }
+    
+    .suit1{
+      background-color: color-mix(in srgb, blue 22%, yellow 8%);
+    }
+    .suit2{
+      background-color: color-mix(in srgb, red 22%, yellow 8%);
+    }
+    .suit3{
+      background-color: color-mix(in srgb, yellow 22%, yellow 8%);
+    }
+    .suit4{
+      background-color: color-mix(in srgb, green 22%, yellow 8%);
     }
   </style>
 
@@ -446,6 +448,9 @@
   //CLASSES
     const SPADE = 1, HEART = 2, DIAMOND = 3, CLUB = 4;
     const SCORE_TRIGGER=52043, HELD_TRIGGER=4310, HELD_ON_ROUND_END_TRIGGER=4360, DISCARDED_TRIGGER=41524, ROUND_START_TRIGGER=57447;
+    const centerContainer = document.getElementById("center");
+    const handContainer = document.getElementById("hand");
+    
     //player
     class Player{
       constructor(name, deck){
@@ -468,28 +473,50 @@
         this.jokers = [];
         this.deck = deck;
       }
+      static PI;
+      static obtainInstant(){ return Player.PI;}
+      static setInstant(p){ Player.PI = p;}
+      
       select(card){
         //error messages if not a selectable card
-          //if(!this.deck.includes(card)) throw new Error("card not in deck");
+          //if(!this.deck.cards.includes(card)) throw new Error("card not in deck");
           //the above function is wrong because when a card is in the hand or center, it is out of the deck
         if(!this.hand.includes(card)&&!this.center.includes(card)) throw new Error("card not in hand or center");
         
         //function
         if(this.hand.includes(card)){
-          this.hand = this.hand.filter(item => item !== card); // Removes ALL occurrences of card
-          this.center.push(card);
+          this.moveCard(card, this.hand, this.center, centerContainer);
         }
         else
         {
-          this.center = this.center.filter(item => item !== card); // Removes ALL occurrences of card
-          this.hand.push(card);
+          this.moveCard(card, this.center, this.hand, handContainer); 
         }
         card.select();
       }
-    }
+      
+      moveCard(card, fromArray, toArray, toContainer) {
+        //if toContainer == false, hide card
+        
+        //move on arrays
+        const index = fromArray.indexOf(card);
     
+        if (index !== -1) {
+          const removedCard = fromArray.splice(index, 1)[0];
+          toArray.push(removedCard);
+        }
+        //move on display html elements
+        if(!toContainer) card.htmlElement.classList.add("hidden");
+        else{
+          toContainer.appendChild(card.htmlElement);
+          card.htmlElement.classList.remove("hidden");
+        }
+      }
+      
+      moveNCardsFromDeckToHand(n){
+        //
+      }
+    }
     //card
-    class CardHtmlElement
     class Card{
       constructor(rank, suit, enh, sea, edi){
         this.rank = rank;
@@ -499,12 +526,28 @@
         this.edition = edi;
         this.seal = sea;
         
-        this.htmlElement = new CardHtmlElement()
+        this.htmlElement = this.makeNewCardHtmlElement();
       }
       //DISPLAY, SELECTING
+      makeNewCardHtmlElement(){
+        let h = document.createElement("div");
+        document.getElementById("hand").appendChild(h);
+        
+        h.classList.add("hidden");
+        h.classList.add("suit"+this.suit);
+        h.innerHTML = this.rank + " " + this.suit;
+        
+        h.addEventListener("click", () => {
+          Player.obtainInstant().select(this);// 'this' is still the card instance
+        });
+        return h;
+      }
+      
       select(){
         
       }
+      
+      destroy(){}
       //AFFECTING SCORE
       //on score effects
       score(){
@@ -523,7 +566,6 @@
       }
       
     }
-    const playerInstant = new Player("name", []);//add functions to allow change of name or smn
     /* MODIFIERS
     Playing cards may each have one Enhancement, one Edition, and one Seal.
     Jokers may have one Edition and multiple Stickers
@@ -580,6 +622,7 @@
       var egold  = new Enhancement(HELD_ON_ROUND_END_TRIGGER, 0, 0, 1, 1, false, false, false, 3, 0, 1);
       var elucky = new Enhancement(SCORE_TRIGGER, 0, 20, 1, 1, false, false, false, 0, 0, 0.2);
     }
+    
     //deck
     class Deck{
       constructor(c){
@@ -607,6 +650,32 @@
       }
     }
     //jokers
+    
+    //TESTING INSTANCES
+    console.log("start12");
+    unco = new Card(1, SPADE, 1, 1, 1);
+    docs = new Card(2, SPADE, 1, 1, 1);
+    trecs = new Card(3, DIAMOND, 1, 1, 1);
+    quco = new Card(4, DIAMOND, 1, 1, 1);
+    uncod = new Card(5, HEART, 1, 1, 1);
+    docsd = new Card(6, HEART, 1, 1, 1);
+    trecsd = new Card(7, CLUB, 1, 1, 1);
+    qucod = new Card(8, CLUB, 1, 1, 1);
+    decko = new Deck([unco,docs,trecs,quco,uncod,docsd,trecsd,qucod]);
+    
+    const playerInstant = new Player("name", decko);//add functions to allow change of name or smn
+    Player.setInstant(playerInstant);
+    
+    playerInstant.moveCard(unco, playerInstant.deck.cards, playerInstant.hand, handContainer);
+    playerInstant.moveCard(docs, playerInstant.deck.cards, playerInstant.hand, handContainer);
+    playerInstant.moveCard(trecs, playerInstant.deck.cards, playerInstant.hand, handContainer);
+    playerInstant.moveCard(quco, playerInstant.deck.cards, playerInstant.hand, handContainer);
+    playerInstant.moveCard(uncod, playerInstant.deck.cards, playerInstant.hand, handContainer);
+    playerInstant.moveCard(docsd, playerInstant.deck.cards, playerInstant.hand, handContainer);
+    playerInstant.moveCard(trecsd, playerInstant.deck.cards, playerInstant.hand, handContainer);
+    playerInstant.moveCard(qucod, playerInstant.deck.cards, playerInstant.hand, handContainer);
+    //TESTING INSTANCES
+      
   </script>
   <script id="game_class_script">
     //game
@@ -614,7 +683,7 @@
     const SMALLMULT = 1, BIGMULT = 1.5, BOSSMULT = 2, FINISHERMULT = 2;
     class Game{
       constructor(seed){
-        this.baseReq = [100, 300,800,2000,5000, 11000,20000,35000,50000, 110000,560000,7200000,300 000000, 47 000 000 000,29 000000 000000, 77 000000 000 000000, 860 000000 000000 000000];//with ante as the index
+        this.baseReq = [100, 300,800,2000,5000, 11000,20000,35000,50000, 110000,560000,7200000,300000000, 47000000000,29000000000000, 77000000000000000, 860000000000000000000];//with ante as the index
         this.blindCount = 0;
         this.currentRoundsBlinds = [];
         this.completedBossBlinds = [];
