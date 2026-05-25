@@ -444,7 +444,6 @@
   </script>
   <script id="classes_script">
   //CLASSES
-    let playerInstant = new Player("name", []);
     const SPADE = 1, HEART = 2, DIAMOND = 3, CLUB = 4;
     const SCORE_TRIGGER=52043, HELD_TRIGGER=4310, HELD_ON_ROUND_END_TRIGGER=4360, DISCARDED_TRIGGER=41524, ROUND_START_TRIGGER=57447;
     //player
@@ -458,6 +457,7 @@
         this.mult = 0;
         this.hand = [];
         this.played = [];
+        this.center = [];//selected cards, idk why i didnt just call this selected
         this.indexOfLastDrawn = 0;
         //game
         this.hands = 3;
@@ -468,9 +468,28 @@
         this.jokers = [];
         this.deck = deck;
       }
+      select(card){
+        //error messages if not a selectable card
+          //if(!this.deck.includes(card)) throw new Error("card not in deck");
+          //the above function is wrong because when a card is in the hand or center, it is out of the deck
+        if(!this.hand.includes(card)&&!this.center.includes(card)) throw new Error("card not in hand or center");
+        
+        //function
+        if(this.hand.includes(card)){
+          this.hand = this.hand.filter(item => item !== card); // Removes ALL occurrences of card
+          this.center.push(card);
+        }
+        else
+        {
+          this.center = this.center.filter(item => item !== card); // Removes ALL occurrences of card
+          this.hand.push(card);
+        }
+        card.select();
+      }
     }
     
     //card
+    class CardHtmlElement
     class Card{
       constructor(rank, suit, enh, sea, edi){
         this.rank = rank;
@@ -479,10 +498,17 @@
         this.enhancement = enh;
         this.edition = edi;
         this.seal = sea;
+        
+        this.htmlElement = new CardHtmlElement()
       }
+      //DISPLAY, SELECTING
+      select(){
+        
+      }
+      //AFFECTING SCORE
       //on score effects
       score(){
-        //add rank
+        //add rank to score
         runModifiers(SCORE_TRIGGER);
       }
       //retrigger
@@ -497,6 +523,7 @@
       }
       
     }
+    const playerInstant = new Player("name", []);//add functions to allow change of name or smn
     /* MODIFIERS
     Playing cards may each have one Enhancement, one Edition, and one Seal.
     Jokers may have one Edition and multiple Stickers
