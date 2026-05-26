@@ -472,6 +472,7 @@
         this.ante = 1;
         this.jokers = [];
         this.deck = deck;
+        this.sortbyRank = true;
       }
       static PI;
       static obtainInstant(){ return Player.PI;}
@@ -507,7 +508,11 @@
         //move on display html elements
         if(!toContainer) card.htmlElement.classList.add("hidden");
         else{
-          toContainer.appendChild(card.htmlElement);
+          if(toArray==this.hand){
+            sortBy(Player.obtainInstant().sortbyRank, toArray);
+          }
+          addAllElements(toArray,toContainer);
+          
           card.htmlElement.classList.remove("hidden");
         }
       }
@@ -516,6 +521,43 @@
         //
       }
     }
+    /**
+     * Sorts an array of cards by rank or by suit, then rank.
+     * @param {boolean} sortByRank - If true, sorts by rank first. If false, sorts by suit then rank.
+     * @param {Array} toArray - The array of card objects to sort.
+     */
+    function sortBy(sortByRank, toArray) {
+        return toArray.sort((cardA, cardB) => {
+            if (sortByRank) {
+                // Sort by rank first. If ranks are equal, break the tie with suit.
+                if (cardA.rank !== cardB.rank) {
+                    return cardA.rank - cardB.rank;
+                }
+                return cardA.suit - cardB.suit;
+            } else {
+                // Sort by suit first. If suits are equal, break the tie with rank.
+                if (cardA.suit !== cardB.suit) {
+                    return cardA.suit - cardB.suit;
+                }
+                return cardA.rank - cardB.rank;
+            }
+        });
+    }
+    
+    /**
+     * Pushes all elements from one array into a container array.
+     * @param {Array} toArray - The source array containing elements to move.
+     * @param {Array} toContainer - The destination array receiving the elements.
+     */
+    function addAllElements(toArray, toContainer) {
+      toArray.forEach(card => {
+        // Check if the card has the HTML element before appending
+        if (card.htmlElement) {
+          toContainer.appendChild(card.htmlElement);
+        }
+      });
+    }
+
     //card
     class Card{
       constructor(rank, suit, enh, sea, edi){
@@ -867,6 +909,24 @@
     //BUTTONS 
     //button bar
     //play button bar
+  if(1==1){
+    var sortRankBtn = document.getElementById("sortRank");
+    var sortSuitBtn = document.getElementById("sortSuit");
+    
+    sortRankBtn.onclick = function() {
+      let pi = Player.obtainInstant();
+      pi.sortbyRank = true;
+      sortBy(true, pi.hand);
+      addAllElements(pi.hand,handContainer);
+    };
+    sortSuitBtn.onclick = function() {
+      let pi = Player.obtainInstant();
+      pi.sortbyRank = false;
+      sortBy(false, pi.hand);
+      addAllElements(pi.hand,handContainer);
+    };
+
+  }
   if(1==0){
     var lb = document.getElementById("lb");
     var ub = document.getElementById("ub");
@@ -887,4 +947,5 @@
     }
   }
   </script>
+  
 </html>
