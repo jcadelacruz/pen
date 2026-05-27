@@ -36,16 +36,16 @@
         </div>
         <div id="scre">
           <div>
-            <p>round score</p>
-            <p id="roundScore">1,000,000,000</p>
+            <div>round score</div>
+            <div id="roundScore">1,000,000,000</div>
           </div>
           <div>
             <p>high card <span>lvl.2</span></p>
           </div>
           <div>
-            <p id="chips">chip</p>
+            <div id="chips">1,000,000</div>
             <p>x</p>
-            <p id="mult">mult</p>
+            <div id="mult">mult</div>
           </div>
         </div>
         <div id="roundInfo">
@@ -55,7 +55,7 @@
                   <p id="hands">4</p>
                 </div>
                 <div>
-                  <p>Discards</p>
+                  <p>Discs</p>
                   <p id="discards"></p>
                 </div>
               </div>
@@ -65,7 +65,7 @@
               <div>
                 <div>
                   <p>Ante</p>
-                  <p><span id="ante"></span>/8</p>
+                  <div><span id="ante">8</span><span>/8</span></div>
                 </div>
                 <div>
                   <p>Round</p>
@@ -185,7 +185,7 @@
           }
           #blindReq{
             height: 50px;
-            font-size: 20px; /*turn into js*/
+            font-size: 15px; /*turn into js*/
             word-wrap: break-word;
             text-wrap: wrap;
           }
@@ -208,18 +208,16 @@
             align-items: center;
           }
             #scre>*:nth-child(1)>*{
-              font-size: 12px;
               word-wrap: break-word;
               text-wrap: wrap;
             }
             #scre>*:nth-child(1)>*:nth-child(1){
-              height: 80%;
+              font-size: 12px;
               width: 40%;
             }
-            p#roundScore{
-              height: 100%;
+            #roundScore{
               width: 60%;
-              font-size: 20px; /*turn into js*/
+              font-size: 12px; /*turn into js*/
             }
           #scre>*:nth-child(2){
             height: 55%;
@@ -242,21 +240,29 @@
             padding: 10px 0;
             display: flex;
             flex-direction: row;
+            align-items: center; 
           }
-            #scre>*:nth-child(3)>p{
+            #scre>*:nth-child(3)>*{
               height: 100%;
+              display: flex;
+              align-items: center; 
+              justify-content: center;
             }
-            #scre>*:nth-child(3)>p:nth-child(2n-1){
+            #scre>*:nth-child(3)>div:nth-child(2n-1){
               width: 45%;
+              background-blend-mode: multiply; 
+              font-size: 10px; /*turn into js*/
             }
             #scre>*:nth-child(3)>p:nth-child(2){
               width: 10%;
             }
-            p#chips{
-              background-color: blue;
+            div#chips{
+              background-color: lightblue;
+              /*background-image: linear-gradient(to bottom, lightblue, blue);*/
             }
-            p#mult{
-              background-color: red;
+            div#mult{
+              background-color: lightpink;
+              /*background-image: linear-gradient(to bottom, lightpink, red);*/
             }
   </style>
   <style id="dashboardRoundInfoStyle">
@@ -273,16 +279,36 @@
           height: 100%;
           display: flex;
           flex-direction: column;
+          align-items: center;
         }
           div#roundInfo>div>div>*{
             width: 100%;
             height: 40%;
-            font-size: 13px;
-            padding-top: 6px;
+            padding: 12% 0;
+          }
+          div#roundInfo>div>div>*:nth-child(1){
+            font-size: clamp(11px,50%,14px);
+            height: 25%;
+            padding-top: 17%;
+            padding-bottom: 12%;
+            text-align: center;
           }
           div#roundInfo>div>div>*:nth-child(2){
             background-color: cyan;
             font-size: 21px;
+            text-align: center;
+          }
+          div#roundInfo>div:nth-child(3)>div:nth-child(2)>*{
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+          }
+          div#roundInfo>div:nth-child(3)>div:nth-child(1)>*:nth-child(2){
+            display: block;
+            height:40%;
+            padding: 7% 0;
+            margin:0;
+            font-size: 5.5px;
           }
         #roundInfo>div:nth-child(2){
           display:flex;
@@ -459,8 +485,10 @@
   //CLASSES
     const SPADE = 1, HEART = 2, DIAMOND = 3, CLUB = 4;
     const SCORE_TRIGGER=52043, HELD_TRIGGER=4310, HELD_ON_ROUND_END_TRIGGER=4360, DISCARDED_TRIGGER=41524, ROUND_START_TRIGGER=57447;
-    const centerContainer = document.getElementById("center");
+    
     const handContainer = document.getElementById("hand");
+    const centerContainer = document.getElementById("center");
+    //const jokerContainer=, consumablesContainer=;
     
     //player
     class Player{
@@ -472,8 +500,8 @@
         this.chips = 0;
         this.mult = 0;
         this.hand = [];
-        this.played = [];
         this.center = [];//selected cards, idk why i didnt just call this selected
+        this.played = [];
         this.indexOfLastDrawn = 0;
         //game
         this.hands = 3;
@@ -532,12 +560,13 @@
         //
       }
     }
+    
+    function sortBy(sortByRank, toArray) {
     /**
      * Sorts an array of cards by rank or by suit, then rank.
      * @param {boolean} sortByRank - If true, sorts by rank first. If false, sorts by suit then rank.
      * @param {Array} toArray - The array of card objects to sort.
      */
-    function sortBy(sortByRank, toArray) {
         return toArray.sort((cardA, cardB) => {
             if (sortByRank) {
                 // Sort by rank first. If ranks are equal, break the tie with suit.
@@ -554,17 +583,23 @@
             }
         });
     }
-    
+    function addAllElements(toArray, toContainer) {
     /**
      * Pushes all elements from one array into a container array.
      * @param {Array} toArray - The source array containing elements to move.
      * @param {Array} toContainer - The destination array receiving the elements.
      */
-    function addAllElements(toArray, toContainer) {
       toArray.forEach(card => {
         // Check if the card has the HTML element before appending
         if (card.htmlElement) {
           toContainer.appendChild(card.htmlElement);
+          //reset position of each card
+          card.htmlElement.style.transform = `translate(0px, 0px)`;
+          card.currentX = 0;
+          card.currentY = 0;
+          card.isDragging = false;
+          card.hasMovedSignificantDistance = false;
+          card.htmlElement.classList.remove("dragging-active");
         }
       });
     }
@@ -584,6 +619,10 @@
         this.hasMovedSignificantDistance = false;
         this.currentX = 0;
         this.currentY = 0;
+        this.downX = 0;
+        this.downY = 0;
+        this.startX = 0;
+        this.startY = 0;
 
       }
       //DISPLAY, SELECTING
@@ -886,7 +925,7 @@
   <script>
     //DISPLAYS
     //dashboard
-    //const blindNameHTML, blindReqHTML, blindRewardHTML //rename these 
+    //const blindNameHTML, blindReqHTML, blindRewardHTML 
     function updateBlindData(blind){
       updateBlindName(blind);
       updateBlindScore(blind);
@@ -929,23 +968,6 @@
       
     }
     //cards
-    //const jokerContainer=, consumablesContainer=, centerContainer=, handContainer=;
-    function addCardToContainer(card, container){
-    //i can reduce access from card to only necessary card details
-      //changes html, but the game reading of the card being on that specific container should be computed by the function that called this function
-    }
-    function removeCardFromContainer(card, container){
-      
-    }
-    function clearContainerContents(container){
-      
-    }
-    function selectCardInContainer(card, container){
-      
-    }
-    function reorderCardInContainer(indexFrom, indexTo, container){
-      
-    }
       //jokers
     function addCardToJokers(card) {
     	addCardToContainer(card, jokerContainer);
@@ -980,37 +1002,7 @@
     }
     
       //center
-    function addCardToCenter(card) {
-    	addCardToContainer(card, centerContainer);
-    }
-    function removeCardFromCenter(card) {
-    	removeCardFromContainer(card, centerContainer);
-    }
-    function clearCenter() {
-    	clearContainerContents(centerContainer);
-    }
-    function selectCardInCenter(card) {
-    	selectCardInContainer(card, centerContainer);
-    }
-    function reorderCenter(indexFrom, indexTo) {
-    	reorderCardInContainer(indexFrom, indexTo, centerContainer);
-    }
       //hand    
-    function addCardToHand(card) {
-    	addCardToContainer(card, handContainer);
-    }
-    function removeCardFromHand(card) {
-    	removeCardFromContainer(card, handContainer);
-    }
-    function clearHand() {
-    	clearContainerContents(handContainer);
-    }
-    function selectCardInHand(card) {
-    	selectCardInContainer(card, handContainer);
-    }
-    function reorderHand(indexFrom, indexTo) {
-    	reorderCardInContainer(indexFrom, indexTo, handContainer);
-    }
     
     //BUTTONS 
     //button bar
