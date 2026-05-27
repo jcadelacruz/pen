@@ -401,6 +401,17 @@
     }
     #center>*,#hand>*{
       background-image: linear-gradient(to bottom right, lightgray, ivory);
+      
+      /*drag and dropable attributes*/
+      position: relative; /* Keep this only if needed for inner absolute elements */
+      touch-action: none;   /* CRITICAL: Prevents mobile browser from scrolling while dragging */
+      user-select: none;    /* Prevents accidental text/image selection highlights */
+      will-change: transform; /* Optimizes GPU performance for smooth dragging animation */
+    }
+    /* Applied dynamically during a drag operation */
+    .dragging-active {
+      pointer-events: none !important; /* Forces document.elementFromPoint to see through the card */
+      z-index: 9999 !important;        /* Keeps the active card visually on top of all others */
     }
     .hidden{
       display: none;
@@ -569,6 +580,11 @@
         this.seal = sea;
         
         this.htmlElement = this.makeNewCardHtmlElement();
+        this.isDragging = false;
+        this.hasMovedSignificantDistance = false;
+        this.currentX = 0;
+        this.currentY = 0;
+
       }
       //DISPLAY, SELECTING
       makeNewCardHtmlElement(){
@@ -579,9 +595,99 @@
         h.classList.add("suit"+this.suit);
         h.innerHTML = this.rank + " " + this.suit;
         
-        h.addEventListener("click", () => {
-          Player.obtainInstant().select(this);// 'this' is still the card instance
+        h.addEventListener("click", (event) => {
+          if (this.hasMovedSignificantDistance) {
+            event.stopPropagation();
+            return;
+          }
+          Player.obtainInstant().select(this);
+          this.currentX = 0;
+          this.currentY = 0;
+          h.style.transform = `translate(0px, 0px)`;
         });
+        
+        h.addEventListener('pointerdown', (event) => {
+          this.isDragging = true;
+          h.classList.add("dragging-active");
+          this.hasMovedSignificantDistance = false;
+          this.downX = event.clientX;
+          this.downY = event.clientY;
+          this.startX = event.clientX - this.currentX;
+          this.startY = event.clientY - this.currentY;
+          h.setPointerCapture(event.pointerId);
+        });
+        
+        h.addEventListener('pointermove', (event) => {
+          if (!this.isDragging) return;
+          
+          const distanceX = Math.abs(event.clientX - this.downX);
+          const distanceY = Math.abs(event.clientY - this.downY);
+          if (distanceX > 5 || distanceY > 5) {
+            this.hasMovedSignificantDistance = true;
+          }
+          
+          this.currentX = event.clientX - this.startX;
+          this.currentY = event.clientY - this.startY;
+          h.style.transform = `translate(${this.currentX}px, ${this.currentY}px)`;
+        });
+        
+        // Dropping the element and sorting the array
+        h.addEventListener('pointerup', (event) => {
+          if (!this.isDragging) return;
+          this.isDragging = false;
+          h.classList.remove("dragging-active");
+          h.releasePointerCapture(event.pointerId);
+          
+          if (this.hasMovedSignificantDistance) {
+            const player = Player.obtainInstant();
+            const toArray = player.hand.includes(this) ? player.hand : player.center;
+            const toContainer = h.parentElement;
+            
+            // 1. Get the container's structural boundaries
+            const containerRect = toContainer.getBoundingClientRect();
+            
+            // 2. Find out how many items are actually in a single row right now
+            const totalCards = toArray.length;
+            const cardsPerRow = totalCards > 7 ? 7 : totalCards; //does this even work? lol
+            
+            // 3. Calculate spatial slot dimensions
+            const slotWidth = containerRect.width / cardsPerRow;
+            const slotHeight = totalCards > 7 ? containerRect.height / 2 : containerRect.height; // Fixed 2 rows
+            
+            // 4. Find where the cursor dropped relative to the top-left of the container
+            const relativeX = event.clientX - containerRect.left;
+            const relativeY = event.clientY - containerRect.top;
+            
+            // 5. Convert pixels to grid coordinates (clamped to prevent out-of-bounds math)
+            const col = Math.max(0, Math.min(cardsPerRow - 1, Math.floor(relativeX / slotWidth)));
+            const row = Math.max(0, Math.min(1, Math.floor(relativeY / slotHeight)));
+            
+            // 6. Calculate the final target array index
+            let targetIndex = (row * cardsPerRow) + col;
+            
+            // Clamp the index to the absolute maximum array length bounds
+            if (targetIndex >= totalCards) {
+              targetIndex = totalCards - 1;
+            }
+            
+            // 7. Find this card's original array position
+            const currentIndex = toArray.indexOf(this);
+            
+            if (currentIndex !== -1 && currentIndex !== targetIndex) {
+              // Remove from old slot and insert into the new calculated slot
+              toArray.splice(currentIndex, 1);
+              toArray.splice(targetIndex, 0, this);
+            }
+            
+            // 8. Readd to container
+            addAllElements(toArray, toContainer);
+            //reset css and local positioning values
+            this.currentX = 0;
+            this.currentY = 0;
+            h.style.transform = `translate(0px, 0px)`;
+          }
+        });
+
         return h;
       }
       
